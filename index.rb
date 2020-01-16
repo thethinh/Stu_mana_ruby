@@ -46,8 +46,8 @@ def createStudent
         print "Nhập tuổi student : "
         age = gets.chomp
         data = {
-            "name" => @name,
-            "age" => @age.to_i
+            "name" => name,
+            "age" => age.to_i
         }
         $student.push(@data)
         writeData()
@@ -55,33 +55,37 @@ def createStudent
 end
 
 def deleteStudent
-    readData()
-    print "Nhập tên student muốn xoá : "
-    name = gets.chomp
-    for i in (0..($student.length()-1))
-        if(i["name"].strip.downcase == @name.downcase)
-            $student.delete_at(i)
-            break
-        else
-            puts "not found"
-            break
-        end
-    end
+    # readData()
+    # print "Nhập tên student muốn xoá : "
+    # name = gets.chomp
+    # for i in (0..($student.length()-1))
+    #     if(i["name"].strip.downcase == @name.downcase)
+    #         $student.delete_at(i)
+    #         break
+    #     else
+    #         puts "not found"
+    #         break
+    #     end
+    # end
 end
 
 def searchStudent
-    readData()
-    print "Nhập tên student muốn tìm : "
-    @name = gets.chomp
-    tmp = 0
-    $student.each do |item|
-        if item["name"].strip.downcase == @name.strip.downcase
-            puts item
-            tmp = tmp + 1
+    begin
+        readData()
+        print "Nhập tên student muốn tìm : "
+        name = gets.chomp
+        tmp = 0
+        error = []
+        $student.each do |item|
+            if item["name"].downcase.include?(name.strip.downcase) == true
+                puts item
+                tmp = tmp + 1
+            end
         end
+    rescue => exception
     end
     if tmp == 0
-        puts "Not found"
+        puts "not found"
     end
 end
 
