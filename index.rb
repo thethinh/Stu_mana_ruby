@@ -8,7 +8,6 @@ def readData
     $student = JSON.parse(json)
 end
 
-
 #write data
 def writeData
     File.open("db.json","w") do |f|
@@ -36,37 +35,49 @@ end
 
 #create new students
 def createStudent
-    readData()
-    print "Nhập số student muốn thêm : "
-    total = gets.chomp
-    for i in (1..total.to_i)
-        puts "Nhập thông tin student thứ #{i}"
-        print "Nhập tên student : "
-        name = gets.chomp
-        print "Nhập tuổi student : "
-        age = gets.chomp
-        data = {
-            "name" => name,
-            "age" => age.to_i
-        }
-        $student.push(@data)
-        writeData()
+    begin
+        readData()
+        print "Nhập số student muốn thêm : "
+        total = gets.chomp
+        for i in (1..total.to_i)
+            puts "NHẬP THÔNG TIN STUDENT THỨ #{i}"
+            print "Nhập tên student : "
+            name = gets.chomp
+            print "Nhập tuổi student : "
+            age = gets.chomp
+            data = {
+                "name" => name.strip.capitalize,
+                "age" => age.strip.to_i
+            }
+            $student.push(data)
+            writeData()
+            puts "Create student complete"
+        end
+    rescue => exception
+        puts exception
     end
 end
 
 def deleteStudent
-    # readData()
-    # print "Nhập tên student muốn xoá : "
-    # name = gets.chomp
-    # for i in (0..($student.length()-1))
-    #     if(i["name"].strip.downcase == @name.downcase)
-    #         $student.delete_at(i)
-    #         break
-    #     else
-    #         puts "not found"
-    #         break
-    #     end
-    # end
+    begin
+        readData()
+        print "Nhập tên student muốn xoá : "
+        name = gets.chomp
+        tmp = 0
+        $student.each do |item|
+            if(item["name"].downcase == name.strip.downcase)
+                tmp = tmp + 1
+                $student.delete(item)
+                writeData()
+                puts "Complete remove student"
+            end
+        end
+    rescue => exception
+        
+    end
+    if tmp == 0
+        puts "Not found"
+    end
 end
 
 def searchStudent
@@ -83,6 +94,7 @@ def searchStudent
             end
         end
     rescue => exception
+
     end
     if tmp == 0
         puts "not found"
